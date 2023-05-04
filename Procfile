@@ -1,1 +1,1 @@
-web: npm rebuild && yarn start
+web: yarn start
