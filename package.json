@@ -11,7 +11,7 @@
   "scripts": {
     "start": "npx ts-node src",
     "start:production": "npx tsc -b src && node src",
-    "postinstall": "npx jsbuffer src/schema -o schema"
+    "postinstall": "npx jsbuffer --extends tsconfig.base.json src/schema -o schema"
   },
   "devDependencies": {
     "@types/node": "18.x",

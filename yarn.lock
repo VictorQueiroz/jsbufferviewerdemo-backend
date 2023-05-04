@@ -380,9 +380,9 @@ isexe@^2.0.0:
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
 jsbuffer@0.x:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/jsbuffer/-/jsbuffer-0.0.17.tgz#50334fb478cf911511ea239cb107289e7944dbfe"
-  integrity sha512-OErb8AfbBa4p9tUYXBRbWpHS3/AKA4/4tzkf9U9mNfPtU7dhhYCJh4AR5oHHh3qDBzmwhbj6f6aal4BR5lHUZA==
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/jsbuffer/-/jsbuffer-0.0.18.tgz#8a429c3faa09ac66953296bfbe37f46dd257761b"
+  integrity sha512-0Qd6t8UCSKXjCebrz2oGBFz7X/1bYicsnFa0e1PgUi9cyhMafCGciOaDsD0UneUmxlbPDayHgqpr5p47To1M2A==
   dependencies:
     cyclic-rc "^2.0.12"
     textstreamjs "0.x"
