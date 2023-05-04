@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "npx ts-node src",
+    "start:production": "npx tsc -b src && node src",
     "postinstall": "npx jsbuffer src/schema -o schema"
   },
   "devDependencies": {
