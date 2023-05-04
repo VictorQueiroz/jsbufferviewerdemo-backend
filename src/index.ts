@@ -19,12 +19,15 @@ const s = new Serializer({
   textEncoder: new TextEncoder(),
 });
 
-let port = process.env['PORT'] ? parseInt(process.env['PORT'], 10) : null;
+let port =
+  typeof process.env['PORT'] === 'string'
+    ? parseInt(process.env['PORT'], 10)
+    : null;
 if (
   port === null ||
   Number.isNaN(port) ||
   !Number.isFinite(port) ||
-  Number.isInteger(port)
+  !Number.isInteger(port)
 ) {
   port = 4000;
 }
