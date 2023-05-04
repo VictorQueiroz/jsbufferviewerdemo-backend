@@ -78,6 +78,10 @@ App({})
       });
     },
   })
+  .any('/*', (res) => {
+    res.write('ok');
+    res.end();
+  })
   .listen(4000, () => {
     console.log('listening on port: %d', 4000);
   });
