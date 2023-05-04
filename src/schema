@@ -18,9 +18,10 @@ call GenerateFiles : Request => generatedFiles {
 trait Error {}
 
 type errorInternalServerError : Error, Result {}
-type errorParsingError : Error, Result {
+type errorDetailedParsingError : Error, Result {
   int lineNumber;
 }
+type errorParsingError : Error, Result {}
 
 type messageRequest {
   int requestId;

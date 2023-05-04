@@ -7,11 +7,13 @@ import {
   decodeMessageRequest,
   generatedFiles,
   generatedFile,
+  errorParsingError,
 } from '../schema/schema';
 import { Deserializer, Serializer } from 'jsbuffer/codec';
 import { FileGenerator } from 'jsbuffer/code-generator';
 import fs from 'fs';
 import path from 'path';
+import { ASTGenerationException } from 'jsbuffer/src/ASTGenerator';
 
 const s = new Serializer({
   textEncoder: new TextEncoder(),
@@ -71,7 +73,10 @@ App({})
           s,
           messageResponse({
             requestId: message.requestId,
-            result: errorInternalServerErrorDefault(),
+            result:
+              reason instanceof ASTGenerationException
+                ? errorParsingError()
+                : errorInternalServerErrorDefault(),
           })
         );
         ws.send(s.view(), true, false);

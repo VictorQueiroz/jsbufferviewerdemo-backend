@@ -141,7 +141,7 @@ export function decodeRequestTrait(__d: IDeserializer) {
 export function RequestDefault() {
     return GenerateFilesDefault();
 }
-export type Result = generatedFiles | errorInternalServerError | errorParsingError;
+export type Result = generatedFiles | errorInternalServerError | errorDetailedParsingError | errorParsingError;
 export function encodeResultTrait(s: ISerializer,value: Result) {
     switch(value._name) {
         case 'schema.generatedFiles':
@@ -149,6 +149,9 @@ export function encodeResultTrait(s: ISerializer,value: Result) {
             break;
         case 'schema.errorInternalServerError':
             encodeErrorInternalServerError(s,value);
+            break;
+        case 'schema.errorDetailedParsingError':
+            encodeErrorDetailedParsingError(s,value);
             break;
         case 'schema.errorParsingError':
             encodeErrorParsingError(s,value);
@@ -158,7 +161,7 @@ export function encodeResultTrait(s: ISerializer,value: Result) {
 export function decodeResultTrait(__d: IDeserializer) {
     const __id = __d.readInt32();
     __d.rewindInt32();
-    let value: generatedFiles | errorInternalServerError | errorParsingError;
+    let value: generatedFiles | errorInternalServerError | errorDetailedParsingError | errorParsingError;
     switch(__id) {
         case -1609744325: {
             const tmp = decodeGeneratedFiles(__d);
@@ -168,6 +171,12 @@ export function decodeResultTrait(__d: IDeserializer) {
         }
         case 1176202453: {
             const tmp = decodeErrorInternalServerError(__d);
+            if(tmp === null) return null;
+            value = tmp;
+            break;
+        }
+        case 1786452860: {
+            const tmp = decodeErrorDetailedParsingError(__d);
             if(tmp === null) return null;
             value = tmp;
             break;
@@ -228,11 +237,14 @@ export function GenerateFilesDefault(params: Partial<GenerateFilesInputParams> =
         ...params
     });
 }
-export type Error = errorInternalServerError | errorParsingError;
+export type Error = errorInternalServerError | errorDetailedParsingError | errorParsingError;
 export function encodeErrorTrait(s: ISerializer,value: Error) {
     switch(value._name) {
         case 'schema.errorInternalServerError':
             encodeErrorInternalServerError(s,value);
+            break;
+        case 'schema.errorDetailedParsingError':
+            encodeErrorDetailedParsingError(s,value);
             break;
         case 'schema.errorParsingError':
             encodeErrorParsingError(s,value);
@@ -242,10 +254,16 @@ export function encodeErrorTrait(s: ISerializer,value: Error) {
 export function decodeErrorTrait(__d: IDeserializer) {
     const __id = __d.readInt32();
     __d.rewindInt32();
-    let value: errorInternalServerError | errorParsingError;
+    let value: errorInternalServerError | errorDetailedParsingError | errorParsingError;
     switch(__id) {
         case 1176202453: {
             const tmp = decodeErrorInternalServerError(__d);
+            if(tmp === null) return null;
+            value = tmp;
+            break;
+        }
+        case 1786452860: {
+            const tmp = decodeErrorDetailedParsingError(__d);
             if(tmp === null) return null;
             value = tmp;
             break;
@@ -292,22 +310,59 @@ export function errorInternalServerErrorDefault(params: Partial<errorInternalSer
         ...params
     });
 }
-export interface errorParsingErrorInputParams {
+export interface errorDetailedParsingErrorInputParams {
     lineNumber: number;
 }
-export function errorParsingError(params: errorParsingErrorInputParams): errorParsingError {
+export function errorDetailedParsingError(params: errorDetailedParsingErrorInputParams): errorDetailedParsingError {
     return {
-        _name: 'schema.errorParsingError',
+        _name: 'schema.errorDetailedParsingError',
         ...params
     };
 }
-export function encodeErrorParsingError(s: ISerializer, value: errorParsingError) {
-    s.writeInt32(-446967748);
+export function encodeErrorDetailedParsingError(s: ISerializer, value: errorDetailedParsingError) {
+    s.writeInt32(1786452860);
     /**
      * encoding param: lineNumber
      */
     const __pv0 = value['lineNumber'];
     s.writeInt32(__pv0);
+}
+export function decodeErrorDetailedParsingError(__d: IDeserializer): errorDetailedParsingError | null {
+    const __id = __d.readInt32();
+    /**
+     * decode header
+     */
+    if(__id !== 1786452860) return null;
+    let lineNumber: number;
+    /**
+     * decoding param: lineNumber
+     */
+    lineNumber = __d.readInt32();
+    return {
+        _name: 'schema.errorDetailedParsingError',
+        lineNumber
+    };
+}
+export interface errorDetailedParsingError  {
+    _name: 'schema.errorDetailedParsingError';
+    lineNumber: number;
+}
+export function errorDetailedParsingErrorDefault(params: Partial<errorDetailedParsingErrorInputParams> = {}): errorDetailedParsingError {
+    return errorDetailedParsingError({
+        lineNumber: 0,
+        ...params
+    });
+}
+export interface errorParsingErrorInputParams {
+}
+export function errorParsingError(params: errorParsingErrorInputParams = {}): errorParsingError {
+    return {
+        _name: 'schema.errorParsingError',
+        ...params
+    };
+}
+export function encodeErrorParsingError(s: ISerializer, _: errorParsingError) {
+    s.writeInt32(-446967748);
 }
 export function decodeErrorParsingError(__d: IDeserializer): errorParsingError | null {
     const __id = __d.readInt32();
@@ -315,23 +370,15 @@ export function decodeErrorParsingError(__d: IDeserializer): errorParsingError |
      * decode header
      */
     if(__id !== -446967748) return null;
-    let lineNumber: number;
-    /**
-     * decoding param: lineNumber
-     */
-    lineNumber = __d.readInt32();
     return {
         _name: 'schema.errorParsingError',
-        lineNumber
     };
 }
 export interface errorParsingError  {
     _name: 'schema.errorParsingError';
-    lineNumber: number;
 }
 export function errorParsingErrorDefault(params: Partial<errorParsingErrorInputParams> = {}): errorParsingError {
     return errorParsingError({
-        lineNumber: 0,
         ...params
     });
 }
