@@ -1,1 +1,1 @@
-web: yarn start
+web: npx tsc -b src && node src
