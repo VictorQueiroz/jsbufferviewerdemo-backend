@@ -19,6 +19,16 @@ const s = new Serializer({
   textEncoder: new TextEncoder(),
 });
 
+let port = process.env['PORT'] ? parseInt(process.env['PORT'], 10) : null;
+if (
+  port === null ||
+  Number.isNaN(port) ||
+  !Number.isFinite(port) ||
+  Number.isInteger(port)
+) {
+  port = 4000;
+}
+
 App({})
   .ws('/ws', {
     message(ws, arrayBuffer) {
@@ -87,6 +97,6 @@ App({})
     res.write('ok');
     res.end();
   })
-  .listen(4000, () => {
-    console.log('listening on port: %d', 4000);
+  .listen(port, () => {
+    console.log('listening on port: %d', port);
   });
