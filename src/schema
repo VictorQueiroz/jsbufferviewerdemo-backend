@@ -1,0 +1,33 @@
+type generatedFile {
+  string path;
+  string contents;
+}
+
+type generatedFiles : Result {
+  vector<generatedFile> files;
+}
+
+trait Request {}
+
+trait Result {}
+
+call GenerateFiles : Request => generatedFiles {
+  string contents;
+}
+
+trait Error {}
+
+type errorInternalServerError : Error, Result {}
+type errorParsingError : Error, Result {
+  int lineNumber;
+}
+
+type messageRequest {
+  int requestId;
+  Request request;
+}
+
+type messageResponse {
+  int requestId;
+  Result result;
+}
