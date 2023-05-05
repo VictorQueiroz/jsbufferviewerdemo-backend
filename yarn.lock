@@ -83,9 +83,9 @@ diff@^4.0.1:
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 jsbuffer@0.x:
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/jsbuffer/-/jsbuffer-0.0.26.tgz#e71489383a8ccc146e350fb5811bb98205bf0b7e"
-  integrity sha512-6oLTC8+2WXUWHvovce5oRYE9CbKkjB74Y5iKW+0vdWBYctX+0ZYJ8xlx620T+OwSVerTBYxtilCMq1MQasq5jg==
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/jsbuffer/-/jsbuffer-0.0.27.tgz#7a8efffbdda9fbdeb437f05edd1db5ddde311547"
+  integrity sha512-CoAe5hmTaiArs0VYzaSOx1mqAIPGtuulvLgIiwe2NNtveCHgof/xuNEn12gRy757dgWdg0KrNaMJjUk++C7aVQ==
   dependencies:
     crc "4.x"
     textstreamjs "0.x"
