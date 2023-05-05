@@ -8,7 +8,8 @@ export interface generatedFileInputParams {
 export function generatedFile(params: generatedFileInputParams): generatedFile {
     return {
         _name: 'schema.generatedFile',
-        ...params
+        path: params['path'],
+        contents: params['contents']
     };
 }
 export function encodeGeneratedFile(s: ISerializer, value: generatedFile) {
@@ -51,12 +52,43 @@ export interface generatedFile  {
     path: string;
     contents: string;
 }
-export function generatedFileDefault(params: Partial<generatedFileInputParams> = {}): generatedFile {
+export function defaultGeneratedFile(params: Partial<generatedFileInputParams> = {}): generatedFile {
     return generatedFile({
         path: "",
         contents: "",
         ...params
     });
+}
+export function compareGeneratedFile(__a: generatedFile, __b: generatedFile) {
+    return (
+        /**
+         * compare parameter path
+         */
+        __a['path'] === __b['path'] &&
+        /**
+         * compare parameter contents
+         */
+        __a['contents'] === __b['contents']
+    );
+}
+export function updateGeneratedFile(value: generatedFile, changes: Partial<generatedFileInputParams>) {
+    if(typeof changes['path'] !== 'undefined') {
+        if(!(changes['path'] === value['path'])) {
+            value = generatedFile({
+                ...value,
+                path: changes['path'],
+            });
+        }
+    }
+    if(typeof changes['contents'] !== 'undefined') {
+        if(!(changes['contents'] === value['contents'])) {
+            value = generatedFile({
+                ...value,
+                contents: changes['contents'],
+            });
+        }
+    }
+    return value;
 }
 export interface generatedFilesInputParams {
     files: ReadonlyArray<generatedFile>;
@@ -64,7 +96,7 @@ export interface generatedFilesInputParams {
 export function generatedFiles(params: generatedFilesInputParams): generatedFiles {
     return {
         _name: 'schema.generatedFiles',
-        ...params
+        files: params['files']
     };
 }
 export function encodeGeneratedFiles(s: ISerializer, value: generatedFiles) {
@@ -109,11 +141,30 @@ export interface generatedFiles  {
     _name: 'schema.generatedFiles';
     files: ReadonlyArray<generatedFile>;
 }
-export function generatedFilesDefault(params: Partial<generatedFilesInputParams> = {}): generatedFiles {
+export function defaultGeneratedFiles(params: Partial<generatedFilesInputParams> = {}): generatedFiles {
     return generatedFiles({
         files: [],
         ...params
     });
+}
+export function compareGeneratedFiles(__a: generatedFiles, __b: generatedFiles) {
+    return (
+        /**
+         * compare parameter files
+         */
+        __a['files'].length === __b['files'].length && __a['files'].every((__i,index) => (compareGeneratedFile(__i,__b['files'][index])))
+    );
+}
+export function updateGeneratedFiles(value: generatedFiles, changes: Partial<generatedFilesInputParams>) {
+    if(typeof changes['files'] !== 'undefined') {
+        if(!(changes['files'].length === value['files'].length && changes['files'].every((__i,index) => (compareGeneratedFile(__i,value['files'][index]))))) {
+            value = generatedFiles({
+                ...value,
+                files: changes['files'],
+            });
+        }
+    }
+    return value;
 }
 export type Request = GenerateFiles;
 export function encodeRequestTrait(s: ISerializer,value: Request) {
@@ -138,8 +189,15 @@ export function decodeRequestTrait(__d: IDeserializer) {
     }
     return value;
 }
-export function RequestDefault() {
-    return GenerateFilesDefault();
+export function defaultRequestTrait() {
+    return defaultGenerateFiles();
+}
+export function compareRequestTrait(__a: Request, __b: Request) {
+    switch(__a._name) {
+        case 'schema.GenerateFiles':
+            if(__b._name !== "schema.GenerateFiles") return false;
+            return compareGenerateFiles(__a,__b);
+    }
 }
 export type Result = generatedFiles | errorInternalServerError | errorDetailedParsingError | errorParsingError;
 export function encodeResultTrait(s: ISerializer,value: Result) {
@@ -191,8 +249,24 @@ export function decodeResultTrait(__d: IDeserializer) {
     }
     return value;
 }
-export function ResultDefault() {
-    return generatedFilesDefault();
+export function defaultResultTrait() {
+    return defaultGeneratedFiles();
+}
+export function compareResultTrait(__a: Result, __b: Result) {
+    switch(__a._name) {
+        case 'schema.generatedFiles':
+            if(__b._name !== "schema.generatedFiles") return false;
+            return compareGeneratedFiles(__a,__b);
+        case 'schema.errorInternalServerError':
+            if(__b._name !== "schema.errorInternalServerError") return false;
+            return compareErrorInternalServerError(__a,__b);
+        case 'schema.errorDetailedParsingError':
+            if(__b._name !== "schema.errorDetailedParsingError") return false;
+            return compareErrorDetailedParsingError(__a,__b);
+        case 'schema.errorParsingError':
+            if(__b._name !== "schema.errorParsingError") return false;
+            return compareErrorParsingError(__a,__b);
+    }
 }
 export interface GenerateFilesInputParams {
     contents: string;
@@ -200,7 +274,7 @@ export interface GenerateFilesInputParams {
 export function GenerateFiles(params: GenerateFilesInputParams): GenerateFiles {
     return {
         _name: 'schema.GenerateFiles',
-        ...params
+        contents: params['contents']
     };
 }
 export function encodeGenerateFiles(s: ISerializer, value: GenerateFiles) {
@@ -231,11 +305,30 @@ export interface GenerateFiles extends IRequest<generatedFiles> {
     _name: 'schema.GenerateFiles';
     contents: string;
 }
-export function GenerateFilesDefault(params: Partial<GenerateFilesInputParams> = {}): GenerateFiles {
+export function defaultGenerateFiles(params: Partial<GenerateFilesInputParams> = {}): GenerateFiles {
     return GenerateFiles({
         contents: "",
         ...params
     });
+}
+export function compareGenerateFiles(__a: GenerateFiles, __b: GenerateFiles) {
+    return (
+        /**
+         * compare parameter contents
+         */
+        __a['contents'] === __b['contents']
+    );
+}
+export function updateGenerateFiles(value: GenerateFiles, changes: Partial<GenerateFilesInputParams>) {
+    if(typeof changes['contents'] !== 'undefined') {
+        if(!(changes['contents'] === value['contents'])) {
+            value = GenerateFiles({
+                ...value,
+                contents: changes['contents'],
+            });
+        }
+    }
+    return value;
 }
 export type Error = errorInternalServerError | errorDetailedParsingError | errorParsingError;
 export function encodeErrorTrait(s: ISerializer,value: Error) {
@@ -278,15 +371,27 @@ export function decodeErrorTrait(__d: IDeserializer) {
     }
     return value;
 }
-export function ErrorDefault() {
-    return errorInternalServerErrorDefault();
+export function defaultErrorTrait() {
+    return defaultErrorInternalServerError();
+}
+export function compareErrorTrait(__a: Error, __b: Error) {
+    switch(__a._name) {
+        case 'schema.errorInternalServerError':
+            if(__b._name !== "schema.errorInternalServerError") return false;
+            return compareErrorInternalServerError(__a,__b);
+        case 'schema.errorDetailedParsingError':
+            if(__b._name !== "schema.errorDetailedParsingError") return false;
+            return compareErrorDetailedParsingError(__a,__b);
+        case 'schema.errorParsingError':
+            if(__b._name !== "schema.errorParsingError") return false;
+            return compareErrorParsingError(__a,__b);
+    }
 }
 export interface errorInternalServerErrorInputParams {
 }
-export function errorInternalServerError(params: errorInternalServerErrorInputParams = {}): errorInternalServerError {
+export function errorInternalServerError(_: errorInternalServerErrorInputParams = {}): errorInternalServerError {
     return {
-        _name: 'schema.errorInternalServerError',
-        ...params
+        _name: 'schema.errorInternalServerError'
     };
 }
 export function encodeErrorInternalServerError(s: ISerializer, _: errorInternalServerError) {
@@ -305,10 +410,16 @@ export function decodeErrorInternalServerError(__d: IDeserializer): errorInterna
 export interface errorInternalServerError  {
     _name: 'schema.errorInternalServerError';
 }
-export function errorInternalServerErrorDefault(params: Partial<errorInternalServerErrorInputParams> = {}): errorInternalServerError {
+export function defaultErrorInternalServerError(params: Partial<errorInternalServerErrorInputParams> = {}): errorInternalServerError {
     return errorInternalServerError({
         ...params
     });
+}
+export function compareErrorInternalServerError(__a: errorInternalServerError, __b: errorInternalServerError) {
+    return true;
+}
+export function updateErrorInternalServerError(value: errorInternalServerError, _: Partial<errorInternalServerErrorInputParams>) {
+    return value;
 }
 export interface errorDetailedParsingErrorInputParams {
     lineNumber: number;
@@ -316,7 +427,7 @@ export interface errorDetailedParsingErrorInputParams {
 export function errorDetailedParsingError(params: errorDetailedParsingErrorInputParams): errorDetailedParsingError {
     return {
         _name: 'schema.errorDetailedParsingError',
-        ...params
+        lineNumber: params['lineNumber']
     };
 }
 export function encodeErrorDetailedParsingError(s: ISerializer, value: errorDetailedParsingError) {
@@ -347,18 +458,36 @@ export interface errorDetailedParsingError  {
     _name: 'schema.errorDetailedParsingError';
     lineNumber: number;
 }
-export function errorDetailedParsingErrorDefault(params: Partial<errorDetailedParsingErrorInputParams> = {}): errorDetailedParsingError {
+export function defaultErrorDetailedParsingError(params: Partial<errorDetailedParsingErrorInputParams> = {}): errorDetailedParsingError {
     return errorDetailedParsingError({
         lineNumber: 0,
         ...params
     });
 }
+export function compareErrorDetailedParsingError(__a: errorDetailedParsingError, __b: errorDetailedParsingError) {
+    return (
+        /**
+         * compare parameter lineNumber
+         */
+        __a['lineNumber'] === __b['lineNumber']
+    );
+}
+export function updateErrorDetailedParsingError(value: errorDetailedParsingError, changes: Partial<errorDetailedParsingErrorInputParams>) {
+    if(typeof changes['lineNumber'] !== 'undefined') {
+        if(!(changes['lineNumber'] === value['lineNumber'])) {
+            value = errorDetailedParsingError({
+                ...value,
+                lineNumber: changes['lineNumber'],
+            });
+        }
+    }
+    return value;
+}
 export interface errorParsingErrorInputParams {
 }
-export function errorParsingError(params: errorParsingErrorInputParams = {}): errorParsingError {
+export function errorParsingError(_: errorParsingErrorInputParams = {}): errorParsingError {
     return {
-        _name: 'schema.errorParsingError',
-        ...params
+        _name: 'schema.errorParsingError'
     };
 }
 export function encodeErrorParsingError(s: ISerializer, _: errorParsingError) {
@@ -377,10 +506,16 @@ export function decodeErrorParsingError(__d: IDeserializer): errorParsingError |
 export interface errorParsingError  {
     _name: 'schema.errorParsingError';
 }
-export function errorParsingErrorDefault(params: Partial<errorParsingErrorInputParams> = {}): errorParsingError {
+export function defaultErrorParsingError(params: Partial<errorParsingErrorInputParams> = {}): errorParsingError {
     return errorParsingError({
         ...params
     });
+}
+export function compareErrorParsingError(__a: errorParsingError, __b: errorParsingError) {
+    return true;
+}
+export function updateErrorParsingError(value: errorParsingError, _: Partial<errorParsingErrorInputParams>) {
+    return value;
 }
 export interface messageRequestInputParams {
     requestId: number;
@@ -389,7 +524,8 @@ export interface messageRequestInputParams {
 export function messageRequest(params: messageRequestInputParams): messageRequest {
     return {
         _name: 'schema.messageRequest',
-        ...params
+        requestId: params['requestId'],
+        request: params['request']
     };
 }
 export function encodeMessageRequest(s: ISerializer, value: messageRequest) {
@@ -434,12 +570,43 @@ export interface messageRequest  {
     requestId: number;
     request: Request;
 }
-export function messageRequestDefault(params: Partial<messageRequestInputParams> = {}): messageRequest {
+export function defaultMessageRequest(params: Partial<messageRequestInputParams> = {}): messageRequest {
     return messageRequest({
         requestId: 0,
-        request: RequestDefault(),
+        request: defaultRequestTrait(),
         ...params
     });
+}
+export function compareMessageRequest(__a: messageRequest, __b: messageRequest) {
+    return (
+        /**
+         * compare parameter requestId
+         */
+        __a['requestId'] === __b['requestId'] &&
+        /**
+         * compare parameter request
+         */
+        compareRequestTrait(__a['request'],__b['request'])
+    );
+}
+export function updateMessageRequest(value: messageRequest, changes: Partial<messageRequestInputParams>) {
+    if(typeof changes['requestId'] !== 'undefined') {
+        if(!(changes['requestId'] === value['requestId'])) {
+            value = messageRequest({
+                ...value,
+                requestId: changes['requestId'],
+            });
+        }
+    }
+    if(typeof changes['request'] !== 'undefined') {
+        if(!(compareRequestTrait(changes['request'],value['request']))) {
+            value = messageRequest({
+                ...value,
+                request: changes['request'],
+            });
+        }
+    }
+    return value;
 }
 export interface messageResponseInputParams {
     requestId: number;
@@ -448,7 +615,8 @@ export interface messageResponseInputParams {
 export function messageResponse(params: messageResponseInputParams): messageResponse {
     return {
         _name: 'schema.messageResponse',
-        ...params
+        requestId: params['requestId'],
+        result: params['result']
     };
 }
 export function encodeMessageResponse(s: ISerializer, value: messageResponse) {
@@ -493,10 +661,41 @@ export interface messageResponse  {
     requestId: number;
     result: Result;
 }
-export function messageResponseDefault(params: Partial<messageResponseInputParams> = {}): messageResponse {
+export function defaultMessageResponse(params: Partial<messageResponseInputParams> = {}): messageResponse {
     return messageResponse({
         requestId: 0,
-        result: ResultDefault(),
+        result: defaultResultTrait(),
         ...params
     });
+}
+export function compareMessageResponse(__a: messageResponse, __b: messageResponse) {
+    return (
+        /**
+         * compare parameter requestId
+         */
+        __a['requestId'] === __b['requestId'] &&
+        /**
+         * compare parameter result
+         */
+        compareResultTrait(__a['result'],__b['result'])
+    );
+}
+export function updateMessageResponse(value: messageResponse, changes: Partial<messageResponseInputParams>) {
+    if(typeof changes['requestId'] !== 'undefined') {
+        if(!(changes['requestId'] === value['requestId'])) {
+            value = messageResponse({
+                ...value,
+                requestId: changes['requestId'],
+            });
+        }
+    }
+    if(typeof changes['result'] !== 'undefined') {
+        if(!(compareResultTrait(changes['result'],value['result']))) {
+            value = messageResponse({
+                ...value,
+                result: changes['result'],
+            });
+        }
+    }
+    return value;
 }
