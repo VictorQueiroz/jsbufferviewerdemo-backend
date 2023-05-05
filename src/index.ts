@@ -1,6 +1,5 @@
 import { App } from 'uWebSockets.js';
 import {
-  errorInternalServerErrorDefault,
   encodeErrorInternalServerError,
   encodeMessageResponse,
   messageResponse,
@@ -8,6 +7,7 @@ import {
   generatedFiles,
   generatedFile,
   errorParsingError,
+  errorInternalServerError,
 } from '../schema/schema';
 import { Deserializer, Serializer } from 'jsbuffer/codec';
 import { FileGenerator } from 'jsbuffer/code-generator';
@@ -42,7 +42,7 @@ App({})
         })
       );
       if (message === null) {
-        encodeErrorInternalServerError(s, errorInternalServerErrorDefault());
+        encodeErrorInternalServerError(s, errorInternalServerError());
         ws.send(s.view());
         return;
       }
@@ -89,7 +89,7 @@ App({})
             result:
               reason instanceof ASTGenerationException
                 ? errorParsingError()
-                : errorInternalServerErrorDefault(),
+                : errorInternalServerError(),
           })
         );
         ws.send(s.view(), true, false);
