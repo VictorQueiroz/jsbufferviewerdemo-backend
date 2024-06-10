@@ -4,7 +4,7 @@
     "jsbuffer": "0.x",
     "ts-node": "10.x",
     "typescript": "5.x",
-    "uWebSockets.js": "uNetworking/uWebSockets.js#v20.x"
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.43.0"
   },
   "engines": {
     "node": "18.x"
@@ -13,6 +13,5 @@
     "start": "npx ts-node src",
     "postinstall": "npx jsbuffer --extends tsconfig.base.json src/schema -o schema"
   },
-  "devDependencies": {},
   "private": false
 }

@@ -1,11 +1,9 @@
 {
     "compilerOptions": {
-        "noUncheckedIndexedAccess": false,
-        "noUnusedLocals": false
     },
     "include": [
-        "./schema.ts",
-        "./__types__.ts"
+        "schema.ts",
+        "__types__.ts"
     ],
     "extends": "../tsconfig.base.json"
 }
